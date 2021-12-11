@@ -9,9 +9,15 @@ namespace BookPublisherStage1
 {
     public class LinkedList : IEnumerable  // односвязный список
     {
-        Book head = null; // головной/первый элемент
+        Book head = null;// головной/первый элемент
         Book tail = null; // последний/хвостовой элемент
         int count;  // количество элементов в списке
+
+        public LinkedList()
+        {
+            this.head = new Book("Head", new Author("Head", "Head"), 0);
+            this.tail = head;
+        }
 
         // добавление элемента
         public void Add(string name, Author author, int edition)
@@ -29,8 +35,8 @@ namespace BookPublisherStage1
         // удаление элемента
         public bool Remove(Book book)
         {
-            Book current = head;
-            Book previous = null;
+            Book current = head.Next;
+            Book previous = head;
 
             while (current != null)
             {
@@ -44,7 +50,9 @@ namespace BookPublisherStage1
                         // изменяем переменную tail
                         if (current.Next == null)
                             tail = previous;
-                    }
+                        count--;
+                        return true;
+                     }
                     else
                     {
                         // если удаляется первый элемент
@@ -55,8 +63,7 @@ namespace BookPublisherStage1
                         if (head == null)
                             tail = null;
                     }
-                    count--;
-                    return true;
+                    
 
                 previous = current;
                 current = current.Next;
@@ -80,7 +87,12 @@ namespace BookPublisherStage1
 
         public IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            Book current = head.Next;
+            while(current != null)
+            {
+                yield return current;
+                current = current.Next;
+            }
         }
         // реализация интерфейса IEnumerable
 
